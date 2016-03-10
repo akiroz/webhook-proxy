@@ -1,0 +1,4 @@
+*.swp
+**/packages
+.packages
+pubspec.lock

@@ -1,0 +1,10 @@
+name: webhook_proxy
+version: 0.0.1
+description: >
+    proxy for github's webhook that supports
+    issue title and description update events
+author: Boris <akiroz.vectis@gmail.com>
+homepage: https://github.com/akiroz/webhook-proxy
+dependencies:
+    fp: '>=0.4.2 <0.5.0'
+
