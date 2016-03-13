@@ -12,6 +12,6 @@ issue title and description update events
 
 ## Usage
 
-* edit config.dart
+* edit `lib/config.dart`
 * start server with `pub run webhook-proxy`
 * ...
