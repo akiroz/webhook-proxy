@@ -1,7 +1,7 @@
 import 'dart:io';
 import "package:test/test.dart";
 import 'package:webhook_proxy/proxy.dart';
-import '../config.dart';
+import 'package:webhook_proxy/config.dart';
 
 void main() {
     test("proxy server", () async {
@@ -14,7 +14,7 @@ void main() {
             await req.response.addStream(req);
             req.response.close();
         });
-        await ProxyServer.create(cfg);
+        await new ProxyServer(cfg).start();
         print('proxy started...');
         var req = await new HttpClient().get('localhost', cfg.bindPort, '/');
         req.headers.set('X-TESTING', 'foobar');

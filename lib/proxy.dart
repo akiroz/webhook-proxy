@@ -10,7 +10,7 @@ typedef void Proxy(HttpRequest);
 
 class ProxyServer {
     Config cfg;
-    ProxyServer(this.cfg)
+    ProxyServer(this.cfg);
 
     /// start HTTP proxy server
     Future start() async {
