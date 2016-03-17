@@ -12,8 +12,9 @@ class Repo {
     Map<int,String> titles;
     Map<int,String> bodies;
     Delegate sendWebHook;
+    HttpClient client;
 
-    Repo(this.repo, this.sendWebHook) {
+    Repo(this.repo, this.sendWebHook, this.client) {
         titles = new Map();
         bodies = new Map();
     }
@@ -46,7 +47,7 @@ class Repo {
     // GET github API
     dynamic _gitGet(String api) async {
         var url = Uri.parse('https://api.github.com'+api);
-        var req = await new HttpClient().getUrl(url);
+        var req = await client.getUrl(url);
         req.headers.set('Authorization', 'token ${repo['oAuth2']}');
         req.headers.set('Accept', 'application/vnd.github.v3+json');
         var resp = await req.close();
@@ -54,7 +55,6 @@ class Repo {
         return resp.transform(UTF8.decoder).reduce((p,v) => p+v);
     }
 }
-
 
 
 

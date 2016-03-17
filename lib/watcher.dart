@@ -10,11 +10,13 @@ import 'package:webhook_proxy/repo.dart' show Repo;
 class Watcher {
     Config cfg;
     Scheduler sched;
+    HttpClient client;
     List<Repo> repos;
 
-    Watcher(this.cfg, this.sched) {
+    Watcher(this.cfg, this.sched, this.client) {
         // wrap all watched repos
-        this.repos = new List.from(cfg.repos.map((r) => new Repo(r, sendWebHook)));
+        var it = cfg.repos.map((r) => new Repo(r, sendWebHook, client));
+        this.repos = new List.from(it);
     }
 
     void start() {
@@ -37,7 +39,7 @@ class Watcher {
                 'sender': gitIssue['user']
             };
             List<int> data = UTF8.encode(JSON.encode(payload));
-            (await new HttpClient().postUrl(cfg.targetUrl))
+            (await client.postUrl(cfg.targetUrl))
                 ..headers.set('user-agent', 'Webhook-Proxy')
                 ..headers.set('X-GitHub-Event', 'issues')
                 ..headers.removeAll('accept-encoding')

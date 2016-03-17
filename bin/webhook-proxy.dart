@@ -1,4 +1,5 @@
 
+import 'dart:io' show HttpClient;
 import 'package:di/di.dart' show ModuleInjector, Module;
 
 import 'package:webhook_proxy/config.dart' show Config;
@@ -8,6 +9,7 @@ import 'package:webhook_proxy/proxy.dart' show ProxyServer;
 
 void main() {
     var di = new ModuleInjector([new Module()
+            ..bind(HttpClient, toFactory: ()=> new HttpClient())
             ..bind(Config)
             ..bind(Scheduler)
             ..bind(Watcher)

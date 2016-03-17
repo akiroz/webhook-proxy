@@ -10,7 +10,8 @@ typedef void Proxy(HttpRequest);
 
 class ProxyServer {
     Config cfg;
-    ProxyServer(this.cfg);
+    HttpClient client;
+    ProxyServer(this.cfg, this.client);
 
     /// start HTTP proxy server
     Future start() async {
@@ -23,7 +24,7 @@ class ProxyServer {
     Proxy proxyRequestTo(Uri url) {
         return (HttpRequest req) async {
             try {
-                HttpClientRequest pxy = await new HttpClient().postUrl(url);
+                HttpClientRequest pxy = await client.postUrl(url);
                 pxy.headers.clear();
                 req.headers.forEach(pxy.headers.set);
                 pxy.headers.set('host', url.authority);
