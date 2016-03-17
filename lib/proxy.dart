@@ -25,6 +25,7 @@ class ProxyServer {
             HttpClientRequest pxy = await new HttpClient().postUrl(url);
             pxy.headers.clear();
             req.headers.forEach(pxy.headers.set);
+            pxy.headers.set('host', url.authority);
             await pxy.addStream(req);
             HttpClientResponse rsp = await pxy.close();
             req.response.headers.clear();

@@ -13,5 +13,11 @@ issue title and description update events
 ## Usage
 
 * edit `lib/config.dart`
-* start server with `pub run webhook-proxy`
-* ...
+* start server with `dart bin/webhook-proxy.dart`
+* or daemonize with `nohup dart bin/webhook-proxy.dart >proxy.log &`
+
+## Limitations
+
+* assumes actor of title or description changes as the creator
+* cannot detect changes made in less than one polling interval
+* cannot detect changes in closed issues

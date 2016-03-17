@@ -30,10 +30,14 @@ class Watcher {
             'repository': gitRepo,
             'sender': gitIssue['user']
         };
+        List<int> payload = UTF8.encode(JSON.encode(webhook));
         var req = await new HttpClient().postUrl(cfg.targetUrl);
-        req.headers.set('X-GitHub-Event', 'updated');
+        req.headers.set('user-agent', 'Webhook-Proxy');
+        req.headers.set('accept', '*/*');
+        req.headers.set('X-GitHub-Event', 'issues');
         req.headers.contentType = new ContentType('application', 'json');
-        req.write(JSON.encode(webhook));
+        req.headers.contentLength = payload.length;
+        req.add(payload);
         req.close();
     }
 

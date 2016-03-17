@@ -11,7 +11,7 @@ class Config {
         var numOfRepos = this.repos.length;
         var pollsPerHr = 5000/numOfRepos;
         var wait = (1/pollsPerHr)*60*60*1000;
-        return new Duration(milliseconds:wait);
+        return new Duration(milliseconds:wait.toInt());
     }
 
     /// Webhook listening port
@@ -24,6 +24,10 @@ class Config {
     List<Map<String,String>> get repos => [
         {
             'name': 'akiroz/test-repo',
+            'oAuth2': new File('akiroz.secret').readAsStringSync().trim()
+        },
+        {
+            'name': 'akiroz/test-repo2',
             'oAuth2': new File('akiroz.secret').readAsStringSync().trim()
         },
     ];
