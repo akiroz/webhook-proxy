@@ -21,6 +21,7 @@ class Repo {
     Curried get init => ()=>_processIssues('init');
     Curried get poll => ()=>_processIssues('poll');
 
+    // register issues & track changes
     // op: enum{'init', 'poll'}
     Future _processIssues(String op) async {
         try {
@@ -41,7 +42,8 @@ class Repo {
             print(e);
         }
     }
-
+    
+    // GET github API
     dynamic _gitGet(String api) async {
         var url = Uri.parse('https://api.github.com'+api);
         var req = await new HttpClient().getUrl(url);
