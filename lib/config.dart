@@ -9,8 +9,8 @@ class Config {
     /// github API polling frequency
     Duration get pollFreq {
         var numOfRepos = this.repos.length;
-        var pollsPerHr = 5000/numOfRepos;
-        var wait = (1/pollsPerHr)*60*60*1000;
+        var pollsPerHr = 5000/numOfRepos;       // rate limit is 5000/hour/IP
+        var wait = (1/pollsPerHr)*60*60*1000;   // maximize polling frequency
         return new Duration(milliseconds:wait.toInt());
     }
 

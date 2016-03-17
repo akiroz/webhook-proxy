@@ -29,21 +29,25 @@ class Watcher {
 
     // send emulated webhook
     Future sendWebHook(Map gitIssue, Map gitRepo) async {
-        Map payload = {
-            'action': 'updated',
-            'issue': gitIssue,
-            'repository': gitRepo,
-            'sender': gitIssue['user']
-        };
-        List<int> data = UTF8.encode(JSON.encode(payload));
-        var req = await new HttpClient().postUrl(cfg.targetUrl);
-        req.headers.set('user-agent', 'Webhook-Proxy');
-        req.headers.set('accept', '*/*');
-        req.headers.set('X-GitHub-Event', 'issues');
-        req.headers.contentType = new ContentType('application', 'json');
-        req.headers.contentLength = data.length;
-        req.add(data);
-        req.close();
+        try {
+            Map payload = {
+                'action': 'updated',
+                'issue': gitIssue,
+                'repository': gitRepo,
+                'sender': gitIssue['user']
+            };
+            List<int> data = UTF8.encode(JSON.encode(payload));
+            (await new HttpClient().postUrl(cfg.targetUrl))
+                ..headers.set('user-agent', 'Webhook-Proxy')
+                ..headers.set('X-GitHub-Event', 'issues')
+                ..headers.removeAll('accept-encoding')
+                ..headers.contentType = new ContentType('application', 'json')
+                ..headers.contentLength = data.length
+                ..add(data)
+                ..close();
+        } catch(e) {
+            print('POST ${cfg.targetUrl} failed:\n$e');
+        }
     }
 
 }

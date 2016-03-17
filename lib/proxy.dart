@@ -22,16 +22,20 @@ class ProxyServer {
     /// return a consumer function `(HttpRequest) => void`
     Proxy proxyRequestTo(Uri url) {
         return (HttpRequest req) async {
-            HttpClientRequest pxy = await new HttpClient().postUrl(url);
-            pxy.headers.clear();
-            req.headers.forEach(pxy.headers.set);
-            pxy.headers.set('host', url.authority);
-            await pxy.addStream(req);
-            HttpClientResponse rsp = await pxy.close();
-            req.response.headers.clear();
-            rsp.headers.forEach(req.response.headers.set);
-            await req.response.addStream(rsp);
-            req.response.close();
+            try {
+                HttpClientRequest pxy = await new HttpClient().postUrl(url);
+                pxy.headers.clear();
+                req.headers.forEach(pxy.headers.set);
+                pxy.headers.set('host', url.authority);
+                await pxy.addStream(req);
+                HttpClientResponse rsp = await pxy.close();
+                req.response.headers.clear();
+                rsp.headers.forEach(req.response.headers.set);
+                await req.response.addStream(rsp);
+                req.response.close();
+            } catch(e) {
+                // slient fail
+            }
         };
     }
 }
